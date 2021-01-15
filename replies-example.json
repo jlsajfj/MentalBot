@@ -1,0 +1,6 @@
+{
+	"default_reply": "Hi there!",
+	"mistake_tag": "Did you take me by mistake?",
+	"invalid_command": "Invalid command.",
+	"insufficient_permissions": "You do not have permission for that command."
+}
