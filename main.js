@@ -42,21 +42,21 @@ function mental(msg) {
 async function clear(msg, args){
 	var cnl = msg.channel
 	if(args.length == 2){
-		deleteMessages(cnl, 99)
+		deleteMessages(cnl, 100)
 		return
 	}
 	if(args.length == 3){
 		if(isNaN(args[2])){
 			return
 		}
-		var cnt = parseInt(args[2])+1
+		var cnt = parseInt(args[2])
 		if(cnt < 100){
 			deleteMessages(cnl, cnt)
 			return
 		}
 		while(cnt > 0){
 			if(cnt > 100){
-				await deleteMessages(cnl, 99)
+				await deleteMessages(cnl, 100)
 				await new Promise(r => setTimeout(r, 1500));
 				cnt -= 100
 				continue
@@ -70,12 +70,11 @@ async function clear(msg, args){
 
 async function deleteMessages(cnl, count){
 	var m;
-	sendWarning(1, cnl, `Clearing ${count} messages`).then( message => {
+	await sendWarning(1, cnl, `Clearing ${count} messages`).then( message => {
 		m = message
 	})
-	await cnl.bulkDelete(count+1).then(messages => {
-		console.log(`${FgGreen}Bulk deleted ${messages.size-1} message(s)${Reset}`)
-		m.delete()
+	await cnl.bulkDelete(count).then(messages => {
+		console.log(`${FgGreen}Bulk deleted ${messages.size} message(s)${Reset}`)
 		return
 	}).catch(console.error)
 }
