@@ -5,7 +5,7 @@ const replies = require("./replies.json")
 // import * from './colors.js'
 // taken from https://stackoverflow.com/questions/9781218/how-to-change-node-jss-console-font-color but redone my way
 
-const { Reset, Bright, Dim, Underscore, Blink, Reverse, Hidden, FgBlack, FgRed, FgGreen, FgYellow, FgBlue, FgMagenta, FgCyan, FgWhite, BgBlack, BgRed, BgGreen, BgYellow, BgBlue, BgMagenta, BgCyan, BgWhite } = require("./colors.js");
+const { Reset,Bright,Dim,Underscore,Blink,Reverse,Hidden,FgBlack,FgRed,FgGreen,FgYellow,FgBlue,FgMagenta,FgCyan,FgWhite,BgBlack,BgRed,BgGreen,BgYellow,BgBlue,BgMagenta,BgCyan,BgWhite } = require("./colors.js");
 
 const client = new Discord.Client();
 client.login(config.token);
