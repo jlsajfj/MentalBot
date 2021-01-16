@@ -97,7 +97,7 @@ async function clear(msg, args){
 				count = parseInt(args[3])
 			}
 			var user = args[2].substring(args[2].indexOf('<@')+2+(args[2].indexOf('!')==-1?0:1),args[2].indexOf('>'))
-			await deleteMessages(cnl, count, user)
+			await deleteMessages(cnl, count, user, msg)
 		}
 		return
 	}
@@ -121,7 +121,7 @@ async function clear(msg, args){
 	}
 }
 
-async function deleteMessages(cnl, count, user){
+async function deleteMessages(cnl, count, user, mm){
 	if(user){
 		var m;
 		var username;
@@ -140,6 +140,9 @@ async function deleteMessages(cnl, count, user){
 		}).catch(console.error)
 		if(user != client.user.id){
 			m.delete()
+		}
+		if(mm){
+			mm.delete()
 		}
 		return
 	}
