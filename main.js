@@ -141,7 +141,7 @@ async function deleteMessages(cnl, count, user, mm){
 		if(user != client.user.id){
 			m.delete()
 		}
-		if(mm){
+		if(mm.author.id != user){
 			mm.delete()
 		}
 		return
