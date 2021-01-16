@@ -49,10 +49,8 @@ client.on("message", msg => {
 	}
 });
 
-var limiter = 0;
 client.on('rateLimit', (info) => {
   console.log(`Rate limit hit ${info.timeDifference ? info.timeDifference : info.timeout ? info.timeout: 'Unknown timeout '}`)
-  limiter = info.timeout
 })
 
 var commands = {
@@ -87,13 +85,23 @@ function mental(msg) {
 async function clear(msg, args){
 	var cnl = msg.channel
 	if(args.length == 2){
-		deleteMessages(cnl, 100)
+		await deleteMessages(cnl, 100)
+		return
+	}
+	if(isNaN(args[2])){
+		if(args[2].match(/<@!{0,1}\d+>/)){
+			// console.log(args[2])
+			// console.log(args[2].substring(args[2].indexOf('<@')+2+(args[2].indexOf('!')==-1?0:1),args[2].indexOf('>')))
+			var count = 100
+			if(args[3] && !isNaN(args[3])){
+				count = parseInt(args[3])
+			}
+			var user = args[2].substring(args[2].indexOf('<@')+2+(args[2].indexOf('!')==-1?0:1),args[2].indexOf('>'))
+			await deleteMessages(cnl, count, user)
+		}
 		return
 	}
 	if(args.length == 3){
-		if(isNaN(args[2])){
-			return
-		}
 		var cnt = parseInt(args[2])
 		if(cnt < 100){
 			deleteMessages(cnl, cnt)
@@ -113,9 +121,30 @@ async function clear(msg, args){
 	}
 }
 
-async function deleteMessages(cnl, count){
+async function deleteMessages(cnl, count, user){
+	if(user){
+		var m;
+		var username;
+		await client.users.fetch(user).then(u => username = u.username).catch(console.error)
+		await sendWarning(cnl, `Clearing messages from ${username} in the last ${count} messages`).then( message => m = message).catch(console.error)
+		var messages
+		await cnl.messages.fetch({limit: count}).then( mmm => messages = mmm ).catch(console.error)
+		// console.log(messages)
+		var msgs = messages.filter( msg => {
+			// console.log(msg)
+			return msg.author.id === user
+		})
+		// console.log(msgs)
+		await cnl.bulkDelete(msgs).then(messages => {
+			console.log(`${FgGreen}Bulk deleted ${messages.size} message(s)${Reset}`)
+		}).catch(console.error)
+		if(user != client.user.id){
+			m.delete()
+		}
+		return
+	}
 	var m;
-	await sendWarning(cnl, `Clearing ${count} messages`, 1).then( message => {
+	await sendWarning(cnl, `Clearing ${count} messages`).then( message => {
 		m = message
 	})
 	await cnl.bulkDelete(count).then(messages => {
@@ -127,18 +156,13 @@ async function deleteMessages(cnl, count){
 		}
 		// console.error(e)
 		var msgs = cnl.messages
-		var messages;
+		var messages
 		await msgs.fetch({limit: count}).then(mmm => messages = mmm).catch(console.error);
 		console.log(`${FgYellow}Received ${messages.size} messages${Reset}`)
 		//console.log(messages)
 		var cnt = messages.size
 		for (message of messages.keys()) {
 			// console.log(`deleting ${message}`)
-			if(limiter!=0){
-				console.log(`${cnt} remaining`)
-				await new Promise(r => setTimeout(r, limiter))
-				limiter = 0
-			}
 			await msgs.fetch(message).then( mess => mess.delete()).catch(console.error)
 			cnt -= 1
 			await new Promise(r => setTimeout(r, 1000))
@@ -155,13 +179,13 @@ async function sendFail(recv, msg){
 	return sendColor(recv, msg, FgRed)
 }
 
-async function sendWarning(recv, msg, flag){
-	return sendColor(recv, msg, FgYellow, flag)
+async function sendWarning(recv, msg){
+	return sendColor(recv, msg, FgYellow)
 }
 
-async function sendColor(recv, msg, color, flag){
+async function sendColor(recv, msg, color){
 	var m
-	if(flag){
+	if(recv instanceof Discord.TextChannel){
 		await recv.send(msg)
 				.then(message => {
 					console.log(`${color}Sent message: ${message.content}${Reset}`)
