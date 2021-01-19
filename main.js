@@ -151,35 +151,35 @@ async function deleteMessages(cnl, count, user, mm){
 	})
 }
 
-async function sendSuccess(recv, msg){
+function sendSuccess(recv, msg){
 	return sendColor(recv, msg, FgGreen)
 }
 
-async function sendFail(recv, msg){
+function sendFail(recv, msg){
 	return sendColor(recv, msg, FgRed)
 }
 
-async function sendWarning(recv, msg){
+function sendWarning(recv, msg){
 	return sendColor(recv, msg, FgYellow)
 }
 
-async function sendColor(recv, msg, color){
-	var m
-	if(recv instanceof Discord.TextChannel){
-		await recv.send(msg)
-				.then(message => {
-					console.log(`${color}Sent message: ${message.content}${Reset}`)
-					m = message
-				})
-				.catch(console.error);
-	}
-	else{
-		await recv.channel.send(msg)
-				.then(message => {
-					console.log(`${color}Sent message: ${message.content}${Reset}`)
-					m = message
-				})
-				.catch(console.error);
-	}
-	return m
+function sendColor(recv, msg, color){
+	return new Promise( (done, error) => {
+		if(recv instanceof Discord.TextChannel){
+			recv.send(msg)
+					.then(message => {
+						console.log(`${color}Sent message: ${message.content}${Reset}`)
+						done(message);
+					})
+					.catch(e => error(e));
+		}
+		else{
+			recv.channel.send(msg)
+					.then(message => {
+						console.log(`${color}Sent message: ${message.content}${Reset}`)
+						done(message);
+					})
+					.catch(e => error(e));
+		}
+	});
 }
