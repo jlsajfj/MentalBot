@@ -1,25 +1,28 @@
-const Discord = require("discord.js")
-const config = require("./config.json")
-const replies = require("./replies.json")
-const clear = require("./clear.js")
+const { Client, Collection } = require("discord.js");
+const { readdirSync } = require("fs");
+const { join } = require("path");
 
 const Send = require("./send.js")
 const Log = require("./log.js")
 
-const client = new Discord.Client();
+const config = require("./config.json")
+const replies = require("./replies.json")
+const perms = require("./commands.json")
+
+
+const client = new Client();
 client.login(config.token);
+client.commands = new Collection();
 
 Log.info("MentalBot is initializing")
-
 client.on('ready', () => {
 	Log.success('MentalBot is online')
 });
 
-var commands = {
-	'clear': {
-		'function': clear,
-		'perms': 'Warden'
-	}
+const commandFiles = readdirSync(join(__dirname, "commands")).filter((file) => file.endsWith(".js"));
+for (const file of commandFiles) {
+  const command = require(join(__dirname, "commands", `${file}`));
+  client.commands.set(command.name, command);
 }
 
 client.on("message", msg => {
@@ -36,13 +39,14 @@ client.on("message", msg => {
 				Send.success(msg, replies.mistake_tag)
 				return
 			}
-			if(!(args[1] in commands)){
+			if(!(args[1] in perms)){
 				Send.fail(msg, replies.invalid_command)
 				return
 			}
-			var command = commands[args[1]]
-			if(msg.member.roles.cache.find(roles => roles.name === command['perms'])){
-				command['function'](msg, args)
+			// Log.info(command)
+			const command = client.commands.get(args[1])
+			if(msg.member.roles.cache.find(roles => roles.name === perms[args[1]]['perms'])){
+				command(msg, args)
 				return
 			}
 			Send.fail(msg, replies.insufficient_permissions)

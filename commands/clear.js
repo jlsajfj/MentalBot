@@ -1,5 +1,5 @@
-const Send = require("./send.js")
-const Log = require("./log.js")
+const Send = require("../send.js")
+const Log = require("../log.js")
 const { DiscordAPIError } = require("discord.js")
 
 async function clear(msg, args){
