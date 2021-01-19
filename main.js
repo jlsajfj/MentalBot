@@ -2,20 +2,16 @@ const Discord = require("discord.js")
 const config = require("./config.json")
 const replies = require("./replies.json")
 const clear = require("./clear.js")
-// const colors = require("./colors.js");
-// import * from './colors.js'
 
-// taken from https://stackoverflow.com/questions/9781218/how-to-change-node-jss-console-font-color but redone my way
-const { Reset,Bright,Dim,Underscore,Blink,Reverse,Hidden,FgBlack,FgRed,FgGreen,FgYellow,FgBlue,FgMagenta,FgCyan,FgWhite,BgBlack,BgRed,BgGreen,BgYellow,BgBlue,BgMagenta,BgCyan,BgWhite } = require("./colors.js");
-const { sendSuccess, sendWarning, sendFail } = require("./send.js")
+const { sendSuccess, sendInfo, sendFail, successLog, infoLog, failLog } = require("./send.js")
 
 const client = new Discord.Client();
 client.login(config.token);
 
-console.log(`${FgYellow}MentalBot is initializing${Reset}`)
+infoLog("MentalBot is initializing")
 
 client.on('ready', () => {
-	console.log(FgGreen + 'MentalBot is online' + Reset);
+	successLog('MentalBot is online')
 });
 
 var commands = {
@@ -29,7 +25,7 @@ client.on("message", msg => {
 	if(msg.author.id === client.user.id) return
 	if(msg.mentions.users){
 		if(msg.mentions.users.keyArray().includes(client.user.id)){
-			console.log(FgYellow + `${msg.author.username} sent the message: ${msg.content}` + Reset)
+			infoLog(`${msg.author.username} sent the message: ${msg.content}`)
 			var args = msg.content.split(' ')
 			if(args.length == 1){
 				sendSuccess(msg, replies.default_reply)
@@ -54,5 +50,5 @@ client.on("message", msg => {
 });
 
 client.on('rateLimit', info => {
-  console.log(`Rate limit hit ${info.timeDifference ? info.timeDifference : info.timeout ? info.timeout: 'Unknown timeout '}`)
+  infoLog(`Rate limit hit ${info.timeDifference ? info.timeDifference : info.timeout ? info.timeout: 'Unknown timeout '}`)
 })

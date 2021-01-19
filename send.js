@@ -6,11 +6,45 @@ function sendSuccess(recv, msg){
 }
 
 function sendFail(recv, msg){
-	return sendColor(recv, msg, FgRed)
+	return new Promise( (done, error) => {
+		if(recv instanceof TextChannel){
+			recv.send(msg)
+					.then(message => {
+						failLog(`Sent message: ${message.content}`)
+						done(message);
+					})
+					.catch(e => error(e));
+		}
+		else{
+			recv.channel.send(msg)
+					.then(message => {
+						failLog(`Sent message: ${message.content}`)
+						done(message);
+					})
+					.catch(e => error(e));
+		}
+	});
 }
 
-function sendWarning(recv, msg){
-	return sendColor(recv, msg, FgYellow)
+function sendInfo(recv, msg){
+	return new Promise( (done, error) => {
+		if(recv instanceof TextChannel){
+			recv.send(msg)
+					.then(message => {
+						infoLog(`Sent message: ${message.content}`)
+						done(message);
+					})
+					.catch(e => error(e));
+		}
+		else{
+			recv.channel.send(msg)
+					.then(message => {
+						infoLog(`Sent message: ${message.content}`)
+						done(message);
+					})
+					.catch(e => error(e));
+		}
+	});
 }
 
 function sendColor(recv, msg, color){
@@ -39,18 +73,24 @@ function successLog(msg){
 }
 
 function failLog(msg){
-	colorLog(msg, FgRed)
+	console.error(`${FgRed}${msg}${Reset}`)
 }
 
-function warnLog(msg){
-	colorLog(msg, FgYellow);
+function infoLog(msg){
+	console.info(`${FgYellow}${msg}${Reset}`)
 }
 
 function colorLog(msg, color){
 	console.log(`${color}${msg}${Reset}`)
 }
 
-exports.sendSuccess = sendSuccess
-exports.sendFail = sendFail
-exports.sendWarning = sendWarning
-exports.sendColor = sendColor
+module.exports = {
+	sendSuccess: sendSuccess,
+	sendFail: sendFail,
+	sendInfo: sendInfo,
+	sendColor: sendColor,
+	successLog: successLog,
+	infoLog: infoLog,
+	failLog: failLog,
+	colorLog: colorLog
+}
