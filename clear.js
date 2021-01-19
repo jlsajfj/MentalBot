@@ -1,4 +1,5 @@
-const { sendSuccess, sendInfo, sendFail, successLog, warnLog, failLog } = require("./send.js")
+const Send = require("./send.js")
+const Log = require("./log.js")
 const { DiscordAPIError } = require("discord.js")
 
 async function clear(msg, args){
@@ -45,7 +46,7 @@ async function deleteMessages(cnl, count, user, mm){
 		var m;
 		var username;
 		await client.users.fetch(user).then(u => username = u.username).catch(console.error)
-		await sendInfo(cnl, `Clearing messages from ${username} in the last ${count} messages`).then( message => m = message).catch(console.error)
+		await Send.info(cnl, `Clearing messages from ${username} in the last ${count} messages`).then( message => m = message).catch(console.error)
 		var messages
 		await cnl.messages.fetch({limit: count}).then( mmm => messages = mmm ).catch(console.error)
 		// console.log(messages)
@@ -55,7 +56,7 @@ async function deleteMessages(cnl, count, user, mm){
 		})
 		// console.log(msgs)
 		await cnl.bulkDelete(msgs).then(messages => {
-			successLog(`Bulk deleted ${messages.size} message(s)`)
+			Log.success(`Bulk deleted ${messages.size} message(s)`)
 		}).catch(console.error)
 		if(user != client.user.id){
 			m.delete()
@@ -66,21 +67,21 @@ async function deleteMessages(cnl, count, user, mm){
 		return
 	}
 	var m;
-	await sendInfo(cnl, `Clearing ${count} messages`).then( message => {
+	await Send.info(cnl, `Clearing ${count} messages`).then( message => {
 		m = message
 	})
 	await cnl.bulkDelete(count).then(messages => {
-		successLog(`Bulk deleted ${messages.size} message(s)`)
+		Log.success(`Bulk deleted ${messages.size} message(s)`)
 		return
 	}).catch(async (e) => {
 		if(e instanceof DiscordAPIError){
-			failLog("Discord API Error: Deleting over two weeks\nStarting workaround\nTHIS IS VERY SLOW")
+			Log.fail("Discord API Error: Deleting over two weeks\nStarting workaround\nTHIS IS VERY SLOW")
 		}
 		// console.error(e)
 		var msgs = cnl.messages
 		var messages
 		await msgs.fetch({limit: count}).then(mmm => messages = mmm).catch(console.error);
-		warnLog(`Received ${messages.size} messages`)
+		Log.warn(`Received ${messages.size} messages`)
 		//console.log(messages)
 		var cnt = messages.size
 		for (message of messages.keys()) {
@@ -89,7 +90,7 @@ async function deleteMessages(cnl, count, user, mm){
 			cnt -= 1
 			await new Promise(r => setTimeout(r, 1000))
 		}
-		successLog(`Cleared ${count} messages`)
+		Log.Success(`Cleared ${count} messages`)
 	})
 }
 
