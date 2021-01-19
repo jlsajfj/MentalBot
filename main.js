@@ -16,6 +16,12 @@ client.commands = new Collection();
 
 Log.info("MentalBot is initializing")
 client.on('ready', () => {
+	client.user.setPresence({
+		activity:{
+			name: 'some mental game'
+		},
+		status: 'idle'
+	})
 	Log.success('MentalBot is online')
 });
 
