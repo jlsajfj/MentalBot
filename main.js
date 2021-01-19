@@ -7,7 +7,7 @@ const Log = require("./log.js")
 
 const config = require("./config.json")
 const replies = require("./replies.json")
-const perms = require("./commands.json")
+const perms = require("./perms.json")
 
 
 const client = new Client();
@@ -39,13 +39,14 @@ client.on("message", msg => {
 				Send.success(msg, replies.mistake_tag)
 				return
 			}
-			if(!(args[1] in perms)){
+			const command = client.commands.get(args[1])
+			if(!command){
 				Send.fail(msg, replies.invalid_command)
 				return
 			}
 			// Log.info(command)
-			const command = client.commands.get(args[1])
-			if(msg.member.roles.cache.find(roles => roles.name === perms[args[1]]['perms'])){
+			// Log.info(perms[args[1]]['perms'])
+			if(msg.member.roles.cache.find(r => perms[args[1]]['perms'].includes(r.name))){
 				command(msg, args)
 				return
 			}

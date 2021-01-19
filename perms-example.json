@@ -1,0 +1,12 @@
+{
+	"clear": {
+		"perms": [
+			"Admin"
+			]
+	},
+	"ping": {
+		"perms": [
+			"@everyone"
+			]
+	}
+}
