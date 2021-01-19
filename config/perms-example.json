@@ -1,12 +1,12 @@
 {
-	"clear": {
-		"perms": [
-			"Admin"
-			]
-	},
-	"ping": {
-		"perms": [
-			"@everyone"
-			]
-	}
+	"clear": [
+		"Admin"
+	],
+	"ping": [
+		"@everyone"
+	],
+	"reply": [
+		"Admin",
+		"Moderator"
+	]
 }

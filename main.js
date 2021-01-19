@@ -1,13 +1,11 @@
 const { Client, Collection } = require("discord.js");
-const { readdirSync } = require("fs");
+const { readdirSync, readFile } = require("fs");
 const { join } = require("path");
+
+const { config, replies, perms } = require("./config")
 
 const Send = require("./send.js")
 const Log = require("./logging.js")
-
-const config = require("./config/config.json")
-const replies = require("./config/replies.json")
-const perms = require("./config/perms.json")
 
 
 const client = new Client();
@@ -20,7 +18,7 @@ client.on('ready', () => {
 		activity:{
 			name: 'some mental game'
 		},
-		status: 'idle'
+		status: 'online'
 	})
 	Log.success('MentalBot is online')
 });
@@ -31,8 +29,17 @@ for (const file of commandFiles) {
   client.commands.set(command.name, command);
 }
 
-client.on("message", msg => {
+client.on("message", async(msg) => {
 	if(msg.author.id === client.user.id) return
+	await readFile('./auto_replies.json', (err, data) => {
+		if (err) throw err;
+		var auto_replies = JSON.parse(data);
+		if(msg.content in auto_replies){
+			Log.info(`${msg.author.username} sent the message: ${msg.content}`)
+			Send.success(msg, auto_replies[msg.content])
+			return
+		}
+	});
 	if(msg.mentions.users){
 		if(msg.mentions.users.keyArray().includes(client.user.id)){
 			Log.info(`${msg.author.username} sent the message: ${msg.content}`)
@@ -52,8 +59,8 @@ client.on("message", msg => {
 			}
 			// Log.info(command)
 			// Log.info(perms[args[1]]['perms'])
-			if(msg.member.roles.cache.find(r => perms[args[1]]['perms'].includes(r.name))){
-				command(msg, args)
+			if(msg.member.roles.cache.find(r => perms[args[1]].includes(r.name))){
+				command(msg, args, client)
 				return
 			}
 			Send.fail(msg, replies.insufficient_permissions)
