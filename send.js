@@ -1,5 +1,5 @@
 const {TextChannel} = require("discord.js")
-const Log = require("./log.js")
+const Log = require("./logging.js")
 
 function sendSuccess(recv, msg){
 	return new Promise( (done, error) => {

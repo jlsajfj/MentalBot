@@ -3,11 +3,11 @@ const { readdirSync } = require("fs");
 const { join } = require("path");
 
 const Send = require("./send.js")
-const Log = require("./log.js")
+const Log = require("./logging.js")
 
-const config = require("./config.json")
-const replies = require("./replies.json")
-const perms = require("./perms.json")
+const config = require("./config/config.json")
+const replies = require("./config/replies.json")
+const perms = require("./config/perms.json")
 
 
 const client = new Client();
