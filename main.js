@@ -31,11 +31,10 @@ client.on('rateLimit', (info) => {
 })
 
 var commands = {
-	'clear': clear
-}
-
-var perms = {
-	'clear': 'Warden'
+	'clear': {
+		'function': clear,
+		'perms': 'Warden'
+	}
 }
 
 function mental(msg) {
@@ -52,8 +51,9 @@ function mental(msg) {
 		sendFail(msg, replies.invalid_command)
 		return
 	}
-	if(msg.member.roles.cache.find(roles => roles.name === perms[args[1]])){
-		commands[args[1]](msg, args)
+	var command = commands[args[1]]
+	if(msg.member.roles.cache.find(roles => roles.name === command['perms'])){
+		command['function'](msg, args)
 		return
 	}
 	sendFail(msg, replies.insufficient_permissions)
