@@ -21,8 +21,10 @@ async function music(msg, args, client){
 			});
 		}).catch(err => console.log(err));
 	}
-	if(args[2]==='stop'){
+	else if(args[2]==='stop'){
 		voice_channel.leave()
+	}
+	else if(args[2]==='add'){
 	}
 }
 
