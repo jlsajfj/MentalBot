@@ -5,7 +5,7 @@ const { DiscordAPIError } = require("discord.js")
 async function clear(msg, args, client){
 	var cnl = msg.channel
 	if(args.length == 2){
-		await deleteMessages(cnl, 100, client)
+		await deleteMessages(cnl, 100)
 		return
 	}
 	if(isNaN(args[2])){
@@ -24,7 +24,7 @@ async function clear(msg, args, client){
 	if(args.length == 3){
 		var cnt = parseInt(args[2])
 		if(cnt < 100){
-			deleteMessages(cnl, cnt, client)
+			deleteMessages(cnl, cnt)
 			return
 		}
 		while(cnt > 0){
@@ -34,7 +34,7 @@ async function clear(msg, args, client){
 				cnt -= 100
 				continue
 			}
-			await deleteMessages(cnl, cnt, client)
+			await deleteMessages(cnl, cnt)
 			cnt = 0
 		}
 		return

@@ -2,7 +2,7 @@ const Send = require("../send.js")
 const Log = require("../logging.js")
 const { readFile, writeFile } = require('fs')
 
-async function reply(msg, args){
+async function setreply(msg, args){
 	await readFile('./auto_replies.json', (err, data) => {
 		if (err) throw err;
 		var auto_replies = JSON.parse(data);
@@ -14,4 +14,4 @@ async function reply(msg, args){
 	});
 }
 
-module.exports = reply
+module.exports = setreply
