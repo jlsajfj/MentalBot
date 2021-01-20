@@ -1,6 +1,6 @@
 {
 	"default_reply": "Hi there!",
-	"mistake_tag": "Did you take me by mistake?",
+	"mistake_tag": "Did you tag me by mistake?",
 	"invalid_command": "Invalid command.",
 	"insufficient_permissions": "You do not have permission for that command.",
 	"no_voice_connected": "You need to be in a voice channel."
