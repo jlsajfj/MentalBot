@@ -15,6 +15,8 @@ discord.js/opus
 ytdl
 ```
 
+To be completely honest I'm not entirely sure if I missed any.
+
 ## Commands
 
 Always tag bot first, usage is written in Minecraft command convention.
