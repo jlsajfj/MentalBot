@@ -31,6 +31,8 @@ The bot will automatically reply to some phrases, without the need to tag.
 
 <img align="left" src="https://i.imgur.com/0MAFzWp.png">
 
+
+
 The configuration is found in `auto_replies.json` and is formatted like below:
 
 ```json
@@ -46,10 +48,14 @@ It can be edited live; it updates without need to restart the bot. However if th
 ### Clear
 <img align="left" src="https://imgur.com/nPNe3sQ.png">
 
+
+
 The clear message (along with the sent command) are cleared after it is done.
 
 ### Ping
 <img align="left" src="https://i.imgur.com/9tn5vuh.png">
+
+
 
 ## Setup
 
