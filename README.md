@@ -37,8 +37,8 @@ The configuration is found in `auto_replies.json` and is formatted like below:
 
 ```json
 {
-	"trigger": "response",
-    "Pizza": "Party!"
+  "trigger": "response",
+  "Pizza": "Party!"
 }
 ```
 
@@ -63,7 +63,7 @@ To use the bot a few configs must be setup. These are all found in the config fo
 
 ```json
 {
-    "token": "DISCORD_TOKEN"
+  "token": "DISCORD_TOKEN"
 }
 ```
 
@@ -73,19 +73,19 @@ The general structure of `perms.json` is the command followed by an array of all
 
 ```json
 {
-	"clear": [
-		"Admin"
-	],
-	"ping": [
-		"@everyone"
-	],
-	"setreply": [
-		"Admin",
-		"Moderator"
-	],
-    "music": [
-        "DJ"
-    ]
+  "clear": [
+    "Admin"
+  ],
+  "ping": [
+    "@everyone"
+  ],
+  "setreply": [
+    "Admin",
+    "Moderator"
+  ],
+  "music": [
+    "DJ"
+  ]
 }
 ```
 
@@ -97,11 +97,11 @@ Some confusion may occur here, `replies.json` are the replies required by the bo
 
 ```json
 {
-	"default_reply": "Hi there!",
-	"mistake_tag": "Did you tag me by mistake?",
-	"invalid_command": "Invalid command.",
-	"insufficient_permissions": "You do not have permission for that command.",
-	"no_voice_connected": "You need to be in a voice channel."
+  "default_reply": "Hi there!",
+  "mistake_tag": "Did you tag me by mistake?",
+  "invalid_command": "Invalid command.",
+  "insufficient_permissions": "You do not have permission for that command.",
+  "no_voice_connected": "You need to be in a voice channel."
 }
 ```
 
@@ -130,14 +130,14 @@ The loading of the commands is borrowed from the same source:
 ```js
 const command = client.commands.get(args[1])
 if(!command){
-    Send.fail(msg, replies.invalid_command)
-    return
+  Send.fail(msg, replies.invalid_command)
+  return
 }
 // Log.info(command)
 // Log.info(perms[args[1]]['perms'])
 if(msg.member.roles.cache.find(r => perms[args[1]].includes(r.name))){
-    command(msg, args, client)
-    return
+  command(msg, args, client)
+  return
 }
 Send.fail(msg, replies.insufficient_permissions)
 ```
@@ -148,13 +148,13 @@ On a user message, it is quickly checked against the set up JSON file here:
 
 ```javascript
 await readFile('./auto_replies.json', (err, data) => {
-    if (err) throw err;
-    var auto_replies = JSON.parse(data);
-    if(msg.content in auto_replies){
-        Log.info(`${msg.author.username} sent the message: ${msg.content}`)
-        Send.success(msg, auto_replies[msg.content])
-        return
-    }
+  if (err) throw err;
+  var auto_replies = JSON.parse(data);
+  if(msg.content in auto_replies){
+    Log.info(`${msg.author.username} sent the message: ${msg.content}`)
+    Send.success(msg, auto_replies[msg.content])
+    return
+  }
 });
 ```
 
@@ -176,8 +176,8 @@ const replies = require("./replies.json")
 const perms = require("./perms.json")
 
 module.exports = {
-	config: config,
-	replies: replies,
-	perms: perms
+  config: config,
+  replies: replies,
+  perms: perms
 }
 ```
