@@ -7,7 +7,6 @@ const { config, replies, perms } = require("./config")
 const Send = require("./send.js")
 const Log = require("./logging.js")
 
-
 const client = new Client();
 client.login(config.token);
 client.commands = new Collection();

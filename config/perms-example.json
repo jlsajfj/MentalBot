@@ -5,8 +5,11 @@
 	"ping": [
 		"@everyone"
 	],
-	"reply": [
+	"setreply": [
 		"Admin",
 		"Moderator"
-	]
+	],
+    "music": [
+        "DJ"
+    ]
 }
