@@ -118,7 +118,7 @@ The commands are set up in a modular way. As long as permissions are set up, the
 This is done with some code borrowed from [here](https://github.com/eritislami/evobot/blob/master/index.js):
 
 ```javascript
-const commandFiles = readdirSync(join(__dirname, "commands")).filter((file) => file.endsWith(".js"));
+const commandFiles = readdirSync(join(__dirname, "commands")).filter(file => file.endsWith(".js"));
 for (const file of commandFiles) {
   const command = require(join(__dirname, "commands", `${file}`));
   client.commands.set(command.name, command);
