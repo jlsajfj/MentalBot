@@ -31,12 +31,17 @@ for (const file of commandFiles) {
 client.on("message", async(msg) => {
     if(msg.author.id === client.user.id) return
     await readFile('./auto_replies.json', (err, data) => {
-        if (err) throw err;
-        var auto_replies = JSON.parse(data);
-        if(msg.content in auto_replies){
-            Log.info(`${msg.author.username} sent the message: ${msg.content}`)
-            Send.success(msg, auto_replies[msg.content])
-            return
+        if (err){
+            Log.fail("auto_replies.json has an issue.")
+            Log.fail(err.stack)
+        }
+        else {
+            var auto_replies = JSON.parse(data);
+            if(msg.content in auto_replies){
+                Log.info(`${msg.author.username} sent the message: ${msg.content}`)
+                Send.success(msg, auto_replies[msg.content])
+                return
+            }
         }
     });
     if(msg.mentions.users){
