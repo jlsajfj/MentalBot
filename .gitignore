@@ -2,6 +2,7 @@ config.json
 replies.json
 perms.json
 auto_replies.json
+tributes.json
 
 *.mp3
 
