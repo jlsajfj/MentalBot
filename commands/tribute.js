@@ -21,7 +21,7 @@ async function tribute(msg, args){
             tributes[id] = val;
             writeFile('./tributes.json', JSON.stringify(tributes, null, 4), (err, data) => {
                 if (err) throw err;
-                Send.success(msg, `+1 prayer\n${msg.author.username}, you have ${val} prayer!`)
+                Send.success(msg, `+1 prayer\n<@${id}>, you have ${val} prayer!`)
             })
             return
         }
