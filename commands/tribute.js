@@ -40,9 +40,7 @@ async function tribute(msg, args){
                 }
                 Send.success(msg, `The highest prayer is ${max}, from:`)
                 for(user of topu){
-                    await msg.channel.members.fetch(user).then(user => {
-                        Send.success(msg,`${user.user.username}`)
-                    }).catch(console.error)
+                    Send.success(msg,`<@${user}>`)
                 }
             }
         }
