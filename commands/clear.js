@@ -78,7 +78,7 @@ async function deleteMessages(cnl, count, client, user, mm, referencedMessageID)
         var messages
         await cnl.messages.fetch({ limit: count }).then(mmm => messages = mmm).catch(console.error)
         const referenceMsgIndex = (message) => (message.id === referencedMessageID);
-        let foundIndex = messages.finndIndex(referenceMsgIndex);
+        let foundIndex = messages.findIndex(referenceMsgIndex);
         var msgs = messages.filter(msg => {
             return messages.indexOf(msg) < foundIndex;
         })
