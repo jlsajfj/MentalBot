@@ -14,8 +14,6 @@ async function clear(msg, args, client) {
     }
     if (isNaN(args[2])) {
         if (args[2].match(/<@!{0,1}\d+>/)) {
-            // console.log(args[2])
-            // console.log(args[2].substring(args[2].indexOf('<@')+2+(args[2].indexOf('!')==-1?0:1),args[2].indexOf('>')))
             var count = 100
             if (args[3] && !isNaN(args[3])) {
                 count = parseInt(args[3])
@@ -79,7 +77,6 @@ async function deleteMessages(cnl, count, client, user, mm, referencedMessageID)
         await Send.info(cnl, `Clearing messages after replied message, up to 100`).then(message => m = message).catch(console.error);
         await cnl.messages.fetch({ limit: count }).then(mmm => messages = mmm).catch(console.error)
         messageArray=messages.array();
-        //const foundIndex = messages.map(function (msg) {return msg.id;}).indexof(referencedMessageID);
         for (i = 0; i<messageArray.length; i++) {
             if (messageArray[i].id === referencedMessageID) {
                 foundIndex = i;
