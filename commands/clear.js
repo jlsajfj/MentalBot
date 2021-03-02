@@ -76,17 +76,19 @@ async function deleteMessages(cnl, count, client, user, mm, referencedMessageID)
         var m;
         var messages;
         let foundIndex;
+        var messageArray;
         await Send.info(cnl, `Clearing messages after replied message, up to 100`).then(message => m = message).catch(console.error);
         await cnl.messages.fetch({ limit: count }).then(mmm => messages = mmm).catch(console.error)
+        messageArray=messages.array();
         //const foundIndex = messages.map(function (msg) {return msg.id;}).indexof(referencedMessageID);
-        for (i = 0; i<messages.length; i++) {
-            if (messages[i].id === referencedMessageID) {
+        for (i = 0; i<messageArray.length; i++) {
+            if (messageArray[i].id === referencedMessageID) {
                 foundIndex = i;
                 break;
             }
         }
-        var msgs = messages.filter(msg => {
-            return messages.indexOf(msg) < foundIndex;
+        var msgs = messageArray.filter((msg, index) => {
+            return index < foundIndex;
         })
         await cnl.bulkDelete(msgs).then(messages => {
             Log.success(`Bulk deleted ${messages.size} message(s)`)
