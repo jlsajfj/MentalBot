@@ -73,7 +73,6 @@ async function deleteMessages(cnl, count, client, user, mm, referencedMessageID)
     }
 
     if (referencedMessageID) {
-        var m;
         var messages;
         let foundIndex;
         var messageArray;
