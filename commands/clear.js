@@ -93,12 +93,6 @@ async function deleteMessages(cnl, count, client, user, mm, referencedMessageID)
         await cnl.bulkDelete(msgs).then(messages => {
             Log.success(`Bulk deleted ${messages.size} message(s)`)
         }).catch(console.error)
-        if (user != client.user.id) {
-            m.delete()
-        }
-        if (mm.author.id != user) {
-            mm.delete()
-        }
         return
     }
 
