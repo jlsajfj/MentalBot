@@ -6,7 +6,7 @@ async function clear(msg, args, client) {
     var cnl = msg.channel
     if (args.length == 2) {
         if (msg.reference) {
-            await deleteMessages(cnl, 100, client, null, msg, msg.reference.referencedMessageID)
+            await deleteMessages(cnl, 100, client, null, msg, msg.reference.messageID)
         } else {
             await deleteMessages(cnl, 100)
         }
