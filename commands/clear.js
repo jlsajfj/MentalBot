@@ -2,15 +2,14 @@ const Send = require("../send.js")
 const Log = require("../logging.js")
 const { DiscordAPIError } = require("discord.js")
 
-async function clear(msg, args, client) {
+function clear(msg, args, client) {
     var cnl = msg.channel
     if (args.length == 2) {
         if (msg.reference) {
-            await deleteMessages(cnl, 100, client, null, msg, msg.reference.messageID)
+            return deleteMessages(cnl, 100, client, null, msg, msg.reference.messageID)
         } else {
-            await deleteMessages(cnl, 100)
+            return deleteMessages(cnl, 100)
         }
-        return
     }
     if (isNaN(args[2])) {
         if (args[2].match(/<@!{0,1}\d+>/)) {
@@ -19,27 +18,15 @@ async function clear(msg, args, client) {
                 count = parseInt(args[3])
             }
             var user = args[2].substring(args[2].indexOf('<@') + 2 + (args[2].indexOf('!') == -1 ? 0 : 1), args[2].indexOf('>'))
-            await deleteMessages(cnl, count, client, user, msg)
+            return deleteMessages(cnl, count, client, user, msg)
         }
-        return
     }
     if (args.length == 3) {
         var cnt = parseInt(args[2])
         if (cnt < 100) {
-            deleteMessages(cnl, cnt)
-            return
+            return deleteMessages(cnl, cnt)
         }
-        while (cnt > 0) {
-            if (cnt > 100) {
-                await deleteMessages(cnl, 100)
-                await new Promise(r => setTimeout(r, 1500));
-                cnt -= 100
-                continue
-            }
-            await deleteMessages(cnl, cnt)
-            cnt = 0
-        }
-        return
+        return deleteMessage(cnl, 100)
     }
 }
 
