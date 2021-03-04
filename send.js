@@ -9,7 +9,7 @@ function sendSuccess(recv, msg){
                         Log.success(`Sent message: ${message.content}`)
                         done(message);
                     })
-                    .catch(e => error(e));
+                    .catch(error);
         }
         else{
             recv.channel.send(msg)
@@ -17,7 +17,7 @@ function sendSuccess(recv, msg){
                         Log.success(`Sent message: ${message.content}`)
                         done(message);
                     })
-                    .catch(e => error(e));
+                    .catch(error);
         }
     });
 }
@@ -30,7 +30,7 @@ function sendFail(recv, msg){
                         Log.fail(`Sent message: ${message.content}`)
                         done(message);
                     })
-                    .catch(e => error(e));
+                    .catch(error);
         }
         else{
             recv.channel.send(msg)
@@ -38,7 +38,7 @@ function sendFail(recv, msg){
                         Log.fail(`Sent message: ${message.content}`)
                         done(message);
                     })
-                    .catch(e => error(e));
+                    .catch(error);
         }
     });
 }
@@ -51,7 +51,7 @@ function sendInfo(recv, msg){
                         Log.info(`Sent message: ${message.content}`)
                         done(message);
                     })
-                    .catch(e => error(e));
+                    .catch(error);
         }
         else{
             recv.channel.send(msg)
@@ -59,7 +59,7 @@ function sendInfo(recv, msg){
                         Log.info(`Sent message: ${message.content}`)
                         done(message);
                     })
-                    .catch(e => error(e));
+                    .catch(error);
         }
     });
 }
@@ -72,7 +72,7 @@ function sendColor(recv, msg, color){
                         Log.color(`Sent message: ${message.content}`, color)
                         done(message);
                     })
-                    .catch(e => error(e));
+                    .catch(error);
         }
         else{
             recv.channel.send(msg)
@@ -80,7 +80,7 @@ function sendColor(recv, msg, color){
                         Log.color(`Sent message: ${message.content}`, color)
                         done(message);
                     })
-                    .catch(e => error(e));
+                    .catch(error);
         }
     });
 }
