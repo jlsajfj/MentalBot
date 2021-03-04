@@ -43,79 +43,69 @@ async function clear(msg, args, client) {
     }
 }
 
-async function deleteMessages(cnl, count, client, user, mm, referencedMessageID) {
+function deleteMessages(cnl, count, client, user, mm, referencedMessageID) {
     if (user) {
-        var m;
-        var username;
-        await client.users.fetch(user).then(u => username = u.username).catch(console.error)
-        await Send.info(cnl, `Clearing messages from ${username} in the last ${count} messages`).then(message => m = message).catch(console.error)
-        var messages
-
-        await cnl.messages.fetch({ limit: count }).then(mmm => messages = mmm).catch(console.error)
-
-        var msgs = messages.filter(msg => {
-            return msg.author.id === user
+        return new Promise( (done, error) => {
+            client.users.fetch(user).then(userObj => {
+                Send.info(cnl, `Clearing messages from ${userObj.username} in the last ${count} messages`).then(message => {
+                    cnl.messages.fetch({ limit: count }).then(messageSet => {
+                        var messagesToDelete = messageSet.filter(msg => msg.author.id === user )
+                        
+                        cnl.bulkDelete(messagesToDelete).then(deletedMessages => {
+                            if (user != client.user.id) {
+                                message.delete()
+                            }
+                            if (mm.author.id != user) {
+                                mm.delete()
+                            }
+                            Log.success(`Bulk deleted ${deletedMessages.size} message(s)`)
+                            done(`Bulk deleted ${deletedMessages.size} message(s)`)
+                        }).catch(error)
+                    }).catch(error)
+                }).catch(error)
+            }).catch(error)
         })
-
-        await cnl.bulkDelete(msgs).then(messages => {
-            Log.success(`Bulk deleted ${messages.size} message(s)`)
-        }).catch(console.error)
-
-        if (user != client.user.id) {
-            m.delete()
-        }
-        if (mm.author.id != user) {
-            mm.delete()
-        }
-        return
     }
 
     if (referencedMessageID) {
-        var messages;
-        let foundIndex;
-        var messageArray;
-        await Send.info(cnl, `Clearing messages after replied message, up to 100`).then(message => m = message).catch(console.error);
-        await cnl.messages.fetch({ limit: count }).then(mmm => messages = mmm).catch(console.error)
-        messageArray=messages.array();
-        for (i = 0; i<messageArray.length; i++) {
-            if (messageArray[i].id === referencedMessageID) {
-                foundIndex = i;
-                break;
-            }
-        }
-        var msgs = messageArray.filter((msg, index) => {
-            return index < foundIndex;
+        return new Promise( (done, error) => {
+            Send.info(cnl, `Clearing messages after replied message, up to 100`).then( () => {
+                cnl.messages.fetch({ limit: count }).then(messageSet => {
+                    var messageArray = messageSet.array();
+                    var foundIndex = -1;
+                    for (var i = 0; i < messageArray.length; i++) {
+                        if (messageArray[i].id === referencedMessageID) {
+                            foundIndex = i;
+                            break;
+                        }
+                    }
+                    
+                    var messagesToDelete;
+                    if(foundIndex === -1){
+                        messagesToDelete = messageArray
+                    }
+                    else{
+                        messagesToDelete = messageArray.filter( (msg, index) => index < foundIndex )
+                    }
+                    
+                    cnl.bulkDelete(messagesToDelete).then(deletedMessages => {
+                        Log.success(`Bulk deleted ${deletedMessages.size} message(s)`)
+                        done(`Bulk deleted ${deletedMessages.size} message(s)`)
+                    }).catch(error)
+                }).catch(error)
+            }).catch(error);
         })
-        await cnl.bulkDelete(msgs).then(messages => {
-            Log.success(`Bulk deleted ${messages.size} message(s)`)
-        }).catch(console.error)
-        return
     }
-
-    var m;
-    await Send.info(cnl, `Clearing ${count} messages`).then(message => {
-        m = message
+    
+    return new Promise( (done, error) => {
+        Send.info(cnl, `Clearing ${count} messages`).then( () => {
+            cnl.bulkDelete(count).then(deletedMessages => {
+                Log.success(`Bulk deleted ${deletedMessages.size} message(s)`)
+                done(`Bulk deleted ${deletedMessages.size} message(s)`)
+            }).catch(error)
+        })
     })
 
-    await cnl.bulkDelete(count).then(messages => {
-        Log.success(`Bulk deleted ${messages.size} message(s)`)
-        return
-    }).catch(async (e) => {
-        if (e instanceof DiscordAPIError) {
-            Log.fail("Discord API Error: Deleting over two weeks\nStarting workaround\nTHIS IS VERY SLOW")
-        }
-
-        var msgs = cnl.messages
-        var messages
-        await msgs.fetch({ limit: count }).then(mmm => messages = mmm).catch(console.error);
-        Log.warn(`Received ${messages.size} messages`)
-
-        for (message of messages.keys()) {
-            await msgs.fetch(message).then(mess => mess.delete()).catch(console.error)
-            await new Promise(r => setTimeout(r, 1000))
-        }
-        Log.Success(`Cleared ${count} messages`)
-    })
 }
 
 module.exports = clear
