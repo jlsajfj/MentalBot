@@ -48,6 +48,5 @@ async function tribute(msg, args){
 }
 
 module.exports = {
-    func: tribute,
-    init: () => {}
+    func: tribute
 }

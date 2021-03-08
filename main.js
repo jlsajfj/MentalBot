@@ -26,7 +26,9 @@ const commandFiles = readdirSync(join(__dirname, "commands")).filter(file => fil
 for (const file of commandFiles) {
     const command = require(join(__dirname, "commands", `${file}`));
     client.commands.set(command.func.name, command.func);
-    command.init(client)
+    if(command.init){
+        command.init(client)
+    }
 }
 
 client.on("message", msg => {

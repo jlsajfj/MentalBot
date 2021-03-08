@@ -96,6 +96,5 @@ function deleteMessages(cnl, count, client, user, mm, referencedMessageID) {
 }
 
 module.exports = {
-    func: clear,
-    init: () => {}
+    func: clear
 }

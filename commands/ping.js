@@ -6,6 +6,5 @@ function ping(message){
 }
 
 module.exports = {
-    func: ping,
-    init: () => {}
+    func: ping
 }

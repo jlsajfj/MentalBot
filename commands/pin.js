@@ -26,6 +26,5 @@ function pin(msg, args){
 }
 
 module.exports = {
-    func: pin,
-    init: () => {}
+    func: pin
 }
