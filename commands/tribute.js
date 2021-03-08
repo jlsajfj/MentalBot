@@ -47,4 +47,7 @@ async function tribute(msg, args){
     });
 }
 
-module.exports = tribute
+module.exports = {
+    func: tribute,
+    init: () => {}
+}

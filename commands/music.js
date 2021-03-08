@@ -28,4 +28,7 @@ async function music(msg, args, client){
 	}
 }
 
-module.exports = music
+module.exports = {
+    func: music,
+    init: () => {}
+}

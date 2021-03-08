@@ -5,4 +5,7 @@ function ping(message){
     Send.success(message, `:ping_pong: ${timeTaken}ms.`);
 }
 
-module.exports = ping
+module.exports = {
+    func: ping,
+    init: () => {}
+}

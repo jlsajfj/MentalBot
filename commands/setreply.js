@@ -17,4 +17,27 @@ function setreply(msg, args){
     })
 }
 
-module.exports = setreply
+function init(client){
+    client.on("message", msg => {
+        if(msg.author.id === client.user.id) return
+        readFile('./auto_replies.json', (err, data) => {
+            if (err){
+                Log.fail("auto_replies.json has an issue.")
+                Log.fail(err.stack)
+            }
+            else {
+                var auto_replies = JSON.parse(data);
+                if(msg.content in auto_replies){
+                    Log.info(`${msg.author.username} sent the message: ${msg.content}`)
+                    Send.success(msg, auto_replies[msg.content])
+                    return
+                }
+            }
+        })
+    })
+}
+
+module.exports = {
+    func: setreply,
+    init: init
+}

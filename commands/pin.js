@@ -25,4 +25,7 @@ function pin(msg, args){
     })
 }
 
-module.exports = pin
+module.exports = {
+    func: pin,
+    init: () => {}
+}
