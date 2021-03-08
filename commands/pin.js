@@ -26,5 +26,6 @@ function pin(msg, args){
 }
 
 module.exports = {
+    desc: 'Pin a message',
     func: pin
 }

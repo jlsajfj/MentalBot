@@ -6,5 +6,6 @@ function ping(message){
 }
 
 module.exports = {
+    description: 'Ping!',
     func: ping
 }

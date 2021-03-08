@@ -38,6 +38,7 @@ function init(client){
 }
 
 module.exports = {
+    desc: 'Set auto-replies',
     func: setreply,
     init: init
 }

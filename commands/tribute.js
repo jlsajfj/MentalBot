@@ -48,5 +48,6 @@ async function tribute(msg, args){
 }
 
 module.exports = {
+    desc: 'Pray to tribute',
     func: tribute
 }

@@ -29,5 +29,6 @@ async function music(msg, args, client){
 }
 
 module.exports = {
+    desc: 'Play music',
     func: music
 }
