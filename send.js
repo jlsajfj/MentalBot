@@ -1,9 +1,9 @@
-const {TextChannel} = require("discord.js")
+const { TextChannel, GuildMember } = require("discord.js")
 const Log = require("./logging.js")
 
 function sendSuccess(recv, msg){
     return new Promise( (done, error) => {
-        if(recv instanceof TextChannel){
+        if(recv instanceof TextChannel || recv instanceof GuildMember){
             recv.send(msg)
                     .then(message => {
                         Log.success(`Sent message: ${message.content}`)
@@ -83,6 +83,9 @@ function sendColor(recv, msg, color){
                     .catch(error);
         }
     });
+}
+
+function send(recv, msg, type, color){
 }
 
 module.exports = {

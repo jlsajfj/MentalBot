@@ -17,6 +17,7 @@ function setreply(msg, args){
 }
 
 function init(client){
+    Log.info('Setting up auto-replies')
     readFile('./auto_replies.json', (err, data) => {
         if (err){
             Log.fail("auto_replies.json has an issue.")
@@ -34,6 +35,7 @@ function init(client){
             return
         }
     })
+    Log.success('Completed')
 }
 
 module.exports = {

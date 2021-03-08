@@ -18,15 +18,14 @@ function autorole(msg, args){
                     })
                 })
                 Promise.all(role_promises).then( role_fetched => {
-                    let role_names = role_fetched.map(elem => elem.name);
-                    all_roles = role_names.join('\n')
-                    Send.success(msg, `Current role list:\n${all_roles}`)
+                    all_roles = role_fetched
+                    Send.success(msg, `Current role list:\n${all_roles.map(elem => elem.name).join('\n')}`)
                 })
             } else {
                 Send.success(msg, `There are no default roles`)
             }
         } else {
-            Send.success(msg, `Current role list:\n${all_roles}`)
+            Send.success(msg, `Current role list:\n${all_roles.map(elem => elem.name).join('\n')}`)
         }
     } else if(args.length == 3) {
         return new Promise( (done, error) => {
@@ -52,8 +51,7 @@ function autorole(msg, args){
                             })
                         })
                         Promise.all(role_promises).then( role_fetched => {
-                            let role_names = role_fetched.map(elem => elem.name);
-                            all_roles = role_names.join('\n')
+                            all_roles = role_fetched
                             done(`"${role.name}" has been added to the automatic role set`)
                         })
                     })
@@ -68,6 +66,7 @@ function autorole(msg, args){
 }
 
 function init(client){
+    Log.info('Setting up auto-role')
     readFile('./roles.json', (err, data) => {
         if (err){
             Log.fail("roles.json has an issue.")
@@ -78,8 +77,9 @@ function init(client){
         }
     })
     client.on('guildMemberAdd', member => {
-        if(auto_roles){
-            member.roles.add(auto_roles)
+        Log.info(`${member.displayName} has joined the guild`)
+        if(auto_roles && auto_roles.length){
+            member.roles.add(auto_roles, "default roles")
             if(!all_roles){
                 let role_promises = auto_roles.map( elem => {
                     return new Promise( done => {
@@ -89,19 +89,20 @@ function init(client){
                     })
                 })
                 Promise.all(role_promises).then( role_fetched => {
-                    let role_names = role_fetched.map(elem => elem.name);
-                    all_roles = role_names.join('\n')
-                    member.createDM.then( cnl => {
-                        Send.success(cnl, `Welcome to Mental Hospital, <@${member.id}>! Here are your current roles:\n${all_roles}`)
-                    })
+                    all_roles = role_fetched
+                    Send.success(member, `Welcome to Mental Hospital, <@${member.id}>! Here are your current roles:\n${all_roles.map(elem => elem.name).join('\n')}`)
                 })
+            } else {
+                Send.success(member, `Welcome to Mental Hospital, <@${member.id}>! Here are your current roles:\n${all_roles.map(elem => elem.name).join('\n')}`)
             }
+        } else {
+            Log.info("No roles to add")
         }
     })
+    Log.success('Completed')
 }
 
 module.exports = {
-    name: 'setautoroles',
     desc: 'Set roles on join',
     func: autorole,
     init: init
