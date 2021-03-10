@@ -1,6 +1,7 @@
 const Send = require("../send.js")
 const Log = require("../logging.js")
 const { readFile, writeFile } = require('fs')
+const { MessageEmbed } = require('discord.js')
 
 var auto_roles;
 var all_roles;
@@ -19,7 +20,11 @@ function autorole(msg, args){
                 })
                 Promise.all(role_promises).then( role_fetched => {
                     all_roles = role_fetched
-                    Send.success(msg, `Current role list:\n${all_roles.map(elem => elem.name).join('\n')}`)
+                    const role_embed = new MessageEmbed()
+                        .setColor('#FFECAC')
+                        .setTitle('Current join roles')
+                        .setDescription(all_roles.map(elem => elem.name).join('\n'))
+                    Send.success(msg, role_embed)
                 })
             } else {
                 Send.success(msg, `There are no default roles`)
