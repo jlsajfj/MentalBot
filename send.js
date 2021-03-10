@@ -1,4 +1,4 @@
-const { TextChannel, GuildMember } = require("discord.js")
+const { TextChannel, GuildMember, MessageEmbed } = require("discord.js")
 const Log = require("./logging.js")
 
 function sendSuccess(recv, msg){
@@ -19,22 +19,23 @@ function sendColor(recv, msg, color){
 
 function sendMain(recv, msg, log_func, color){
     return new Promise( (done, error) => {
-        if(recv instanceof TextChannel){
-            recv.send(msg)
-                    .then(message => {
-                        log_func(`Sent message: ${message.content}`, color)
-                        done(message);
-                    })
-                    .catch(error);
+        var send_to;
+        if(recv instanceof TextChannel || recv instanceof GuildMember){
+            send_to = recv;
         }
         else{
-            recv.channel.send(msg)
-                    .then(message => {
-                        log_func(`Sent message: ${message.content}`, color)
-                        done(message);
-                    })
-                    .catch(error);
+            send_to = recv.channel;
         }
+        send_to.send(msg)
+            .then(message => {
+                if(msg instanceof MessageEmbed){
+                    log_func(`Sent embed`, color)
+                } else {
+                    log_func(`Sent message: ${message.content}`, color)
+                }
+                done(message);
+            })
+            .catch(error);
     });
 }
 
