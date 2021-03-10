@@ -35,20 +35,23 @@ async function tribute(msg, args){
         if(args.length === 3){
             if(args[2] === 'top'){
                 var max = 0
-                var topu = []
+                var top_users = []
                 for (const [key, value] of Object.entries(tributes)) {
                     if(value > max){
-                        topu = [key]
+                        top_users = [key]
                         max = value
                     }
                     else if (value === max){
-                        topu.push(key)
+                        top_users.push(key)
                     }
                 }
-                Send.success(msg, `The highest prayer is ${max}, from:`)
-                for(user of topu){
-                    Send.success(msg,`<@${user}>`)
-                }
+                const prayer_embed = new MessageEmbed()
+                    .setColor('#FFECAC')
+                    .setTitle('Tribute')
+                    .attachFiles(['./assets/hands.png'])
+                    .setThumbnail('attachment://hands.png')
+                    .setDescription(`The highest prayer is ${max}, from:\n<@${top_users.join('>\n<@')}>`)
+                Send.success(msg, prayer_embed)
             }
         }
     });
