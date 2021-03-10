@@ -1,6 +1,7 @@
 const Send = require("../send.js")
 const Log = require("../logging.js")
 const { readFile, writeFile } = require('fs')
+const { MessageEmbed } = require('discord.js')
 
 async function tribute(msg, args){
     await readFile('./tributes.json', async (err, data) => {
@@ -21,7 +22,13 @@ async function tribute(msg, args){
             tributes[id] = val;
             writeFile('./tributes.json', JSON.stringify(tributes, null, 4), (err, data) => {
                 if (err) throw err;
-                Send.success(msg, `+1 prayer\n<@${id}>, you have ${val} prayer!`)
+                const prayer_embed = new MessageEmbed()
+                    .setColor('#FFECAC')
+                    .setTitle('Tribute')
+                    .setDescription(`+1 prayer\n<@${id}>, you have ${val} prayer!`)
+                    .attachFiles(['./assets/hands.png'])
+                    .setThumbnail('attachment://hands.png')
+                Send.success(msg, prayer_embed)
             })
             return
         }
