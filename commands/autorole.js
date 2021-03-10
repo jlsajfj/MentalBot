@@ -22,7 +22,7 @@ function autorole(msg, args){
                     all_roles = role_fetched
                     const role_embed = new MessageEmbed()
                         .setColor('#FFECAC')
-                        .setTitle('Current join roles')
+                        .setTitle('Current Auto-Roles')
                         .setDescription(all_roles.map(elem => elem.name).join('\n'))
                     Send.success(msg, role_embed)
                 })
