@@ -12,7 +12,7 @@ async function tribute(msg, args){
         else {
             tributes = JSON.parse(data);
         }
-        Log.info(args)
+        // Log.info(args)
         if(args.length === 2){
             var id = msg.author.id;
             var val = tributes[id];
