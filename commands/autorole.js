@@ -7,7 +7,7 @@ var auto_roles;
 var all_roles;
 
 function autorole(msg, args){
-    if(args.length < 2) return
+    if(args.length < 2) return Send.fail("Not enough args")
     if(args.length == 2) {
         if(!all_roles){
             if(auto_roles.length){

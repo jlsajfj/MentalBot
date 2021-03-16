@@ -26,6 +26,8 @@ function msginfo(msg, args){
                 .setFooter(stamp)
             Send.success(msg, info_embed)
         })
+    } else {
+        return Send.fail('A replied message is required')
     }
 }
 
