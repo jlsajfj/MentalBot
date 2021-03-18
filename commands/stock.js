@@ -23,8 +23,7 @@ function stock_chart(msg, args){
                 .setImage(`attachment://${trimmed_data}`)
                 .setFooter("Retrieved")
                 .setTimestamp()
-            Send.success(msg, stock_embed).then( () => {
-                new_msg.delete()
+            new_msg.edit(stock_embed).then( () => {
                 unlink(path, (err) => {
                     if (err) throw err;
                     Log.success('Temp file removed')
