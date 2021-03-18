@@ -1,8 +1,8 @@
 const Send = require("../send.js")
 const Log = require("../logging.js")
 const { MessageEmbed } = require('discord.js')
-const { spawn } = require('child_process')
-const { writeFile } = require('fs')
+// const { spawn } = require('child_process')
+// const { writeFile } = require('fs')
 
 function code_format(msg, args){
     if(args.length < 2) return Send.fail('Not enough args')
