@@ -35,7 +35,10 @@ def main():
     if len(sys.argv) == 2:
         price(sys.argv[1], _period = '5d', _interval = '1h')
     if len(sys.argv) == 3:
-        price(sys.argv[1], _period = sys.argv[2], _interval = '1d')
+        if sys.argv[2] == 'default':
+            price(sys.argv[1])
+        else:
+            price(sys.argv[1], _period = sys.argv[2], _interval = '1d')
     if len(sys.argv) == 4:
         price(sys.argv[1], _period = sys.argv[2], _interval = sys.argv[3])
 
