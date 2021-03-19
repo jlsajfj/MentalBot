@@ -17,9 +17,9 @@ def price(ticker: str, _period: str = '1mo', _interval: str = '1d'):
     
     plt.style.use('dark_background')
     fig, ax = plt.subplots()
-    ax.plot(hist[['Open']], '-b', label='Open')
-    ax.plot(hist[['Close']], '--r', label='Close')
-    leg = ax.legend(frameon=False)
+    ax.plot(hist[['Open']], color = '#8BBF56', linewidth = 1, markersize = 0, label = 'Open')
+    ax.plot(hist[['Close']], color = '#BF8B56', linewidth = 1, markersize = 0, linestyle = 'dashed', label = 'Close')
+    leg = ax.legend(frameon = False)
     ax.patch.set_alpha(0)
     
     plt.title(f"{ticker.upper()}")
