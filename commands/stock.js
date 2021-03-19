@@ -43,10 +43,11 @@ function stock_chart(msg, args){
                 if(err.trim().split('\n').slice(-1)[0].includes("No ticker info")){
                     Send.fail(msg, `${ticker} is not a valid ticker`)
                 } else {
+                    err = err.split('"').join("'")
                     const error_embed = new MessageEmbed()
                         .setColor('#FFECAC')
                         .setTitle('An Exception has Occured')
-                        .setDescription(`\`\`\`\n${err}\n\`\`\``)
+                        .setDescription(`\`\`\`st\n${err}\n\`\`\``)
                     Send.fail(msg, error_embed)
                 }
             }
