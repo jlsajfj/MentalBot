@@ -33,7 +33,7 @@ function code_format(msg, args){
                 .setColor('#FFECAC')
                 .setTitle('Formatted Code')
                 .setDescription(`\`\`\`${lang}\n${found_content}\`\`\``)
-            Send.success(msg, code_embed)
+            return Send.success(msg, code_embed)
         })
     } else {
         return Send.fail('A replied message is required')
