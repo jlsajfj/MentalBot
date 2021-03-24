@@ -50,13 +50,13 @@ function sendError(recv, err){
         }
         const error_embed = new MessageEmbed()
             .setColor('#FFECAC')
-            .setTitle('An Error has Occurred')
+            .setTitle('An error has occurred')
             .setDescription('```\n'+err+'```')
             .setFooter("Retrieved")
             .setTimestamp()
-        send_to.send(error_embed).then( () => {
-            Log.fail(`Sent error`)
-            done('Sent error')
+        send_to.send(error_embed).then( sent_msg => {
+            Log.fail(`Sent error: ${err}`)
+            done(sent_msg)
         }).catch(error)
     })
 }
