@@ -22,6 +22,8 @@ function stock_chart(msg, args){
             })
             
             stock_find_process.on('exit', () => {
+                new_msg.delete()
+                
                 if(data != ''){
                     var path = join(__dirname, `../${data}`)
                     Log.info(`File ${data} generated at ${path}`)
@@ -49,8 +51,6 @@ function stock_chart(msg, args){
                         error(err)
                     }
                 }
-                
-                new_msg.delete()
             })
         })
     })

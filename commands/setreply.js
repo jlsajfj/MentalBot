@@ -5,13 +5,12 @@ const { readFile, writeFile } = require('fs')
 var auto_replies;
 
 function setreply(msg, args){
-    if(args.length <  4) return;
-    return new Promise( done => {
+    if(args.length <  4) return Send.fail(msg, 'Not enough arguments')
+    return new Promise( (done, error) => {
         auto_replies[args[2]] = args[3]
         writeFile('./auto_replies.json', JSON.stringify(auto_replies, null, 4), (err, data) => {
-            if (err) throw err
-            Send.success(msg, `Set ${args[2]} = ${args[3]}`)
-            done(`Set ${args[2]} = ${args[3]}`)
+            if (err) error(err)
+            else Send.success(msg, `Set ${args[2]} = ${args[3]}`).then(done).catch(error)
         })
     })
 }
