@@ -9,29 +9,31 @@ var all_roles;
 function autorole(msg, args){
     if(args.length < 2) return Send.fail("Not enough args")
     if(args.length == 2) {
-        if(!all_roles){
-            if(auto_roles.length){
-                let role_promises = auto_roles.map( elem => {
-                    return new Promise( done => {
-                        msg.guild.roles.fetch(elem)
-                            .then(done)
-                            .catch(Log.fail)
+        return new Promise( (done, error) => {
+            if(!all_roles){
+                if(auto_roles.length){
+                    let role_promises = auto_roles.map( elem => {
+                        return new Promise( done => {
+                            msg.guild.roles.fetch(elem)
+                                .then(done)
+                                .catch(error)
+                        })
                     })
-                })
-                Promise.all(role_promises).then( role_fetched => {
-                    all_roles = role_fetched
-                    const role_embed = new MessageEmbed()
-                        .setColor('#FFECAC')
-                        .setTitle('Current Auto-Roles')
-                        .setDescription(all_roles.map(elem => elem.name).join('\n'))
-                    return Send.success(msg, role_embed)
-                })
+                    Promise.all(role_promises).then( role_fetched => {
+                        all_roles = role_fetched
+                        const role_embed = new MessageEmbed()
+                            .setColor('#FFECAC')
+                            .setTitle('Current Automatic-Roles')
+                            .setDescription(all_roles.map(elem => elem.name).join('\n'))
+                        Send.success(msg, role_embed).then(done).catch(error)
+                    })
+                } else {
+                    Send.success(msg, `There are no default roles`).then(done).catch(error)
+                }
             } else {
-                return Send.success(msg, `There are no default roles`)
+                Send.success(msg, `Current role list:\n${all_roles.map(elem => elem.name).join('\n')}`).then(done).catch(error)
             }
-        } else {
-            return Send.success(msg, `Current role list:\n${all_roles.map(elem => elem.name).join('\n')}`)
-        }
+        })
     } else if(args.length == 3) {
         return new Promise( (done, error) => {
             var role = msg.guild.roles.cache.find(searchElem => searchElem.name.toLowerCase().includes(args[2].toLowerCase()))
