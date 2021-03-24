@@ -24,13 +24,13 @@ function autorole(msg, args){
                         .setColor('#FFECAC')
                         .setTitle('Current Auto-Roles')
                         .setDescription(all_roles.map(elem => elem.name).join('\n'))
-                    Send.success(msg, role_embed)
+                    return Send.success(msg, role_embed)
                 })
             } else {
-                Send.success(msg, `There are no default roles`)
+                return Send.success(msg, `There are no default roles`)
             }
         } else {
-            Send.success(msg, `Current role list:\n${all_roles.map(elem => elem.name).join('\n')}`)
+            return Send.success(msg, `Current role list:\n${all_roles.map(elem => elem.name).join('\n')}`)
         }
     } else if(args.length == 3) {
         return new Promise( (done, error) => {
@@ -40,30 +40,30 @@ function autorole(msg, args){
                     auto_roles = []
                 }
                 if(auto_roles.includes(role.id)){
-                    Send.fail(msg, `"${role.name}" is already part of the automatic role set`)
+                    // Send.fail(msg, `"${role.name}" is already part of the automatic role set`)
                     error(`"${role.name}" is already part of the automatic role set`)
                 } else {
                     auto_roles.push(role.id)
-                    Send.success(msg, `"${role.name}" has been added to the automatic role set`)
-                    writeFile('./roles.json', JSON.stringify(auto_roles, null, 4), (err, data) => {
-                        if (err) throw err
-                        
-                        let role_promises = auto_roles.map( elem => {
-                            return new Promise( done => {
-                                msg.guild.roles.fetch(elem)
-                                    .then(done)
-                                    .catch(Log.fail)
+                    Send.success(msg, `"${role.name}" has been added to the automatic role set`).then( sent_msg => {
+                        writeFile('./roles.json', JSON.stringify(auto_roles, null, 4), (err, data) => {
+                            if (err) throw err
+                            
+                            let role_promises = auto_roles.map( elem => {
+                                return new Promise( done => {
+                                    msg.guild.roles.fetch(elem)
+                                        .then(done)
+                                        .catch(Log.fail)
+                                })
+                            })
+                            Promise.all(role_promises).then( role_fetched => {
+                                all_roles = role_fetched
+                                done(sent_msg)
                             })
                         })
-                        Promise.all(role_promises).then( role_fetched => {
-                            all_roles = role_fetched
-                            done(`"${role.name}" has been added to the automatic role set`)
-                        })
                     })
-                    
                 }
             } else {
-                Send.fail(msg, `There is no role named "${args[2]}"`)
+                // Send.fail(msg, `There is no role named "${args[2]}"`)
                 error(`There is no role named "${args[2]}"`)
             }
         })
