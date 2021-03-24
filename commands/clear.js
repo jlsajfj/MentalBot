@@ -46,7 +46,7 @@ function deleteMessages(cnl, count, client, user, mm, referencedMessageID) {
                                 mm.delete()
                             }
                             Log.success(`Bulk deleted ${deletedMessages.size} message(s)`)
-                            done(`Bulk deleted ${deletedMessages.size} message(s)`)
+                            done(null)
                         }).catch(error)
                     }).catch(error)
                 }).catch(error)
@@ -77,7 +77,7 @@ function deleteMessages(cnl, count, client, user, mm, referencedMessageID) {
                     
                     cnl.bulkDelete(messagesToDelete).then(deletedMessages => {
                         Log.success(`Bulk deleted ${deletedMessages.size} message(s)`)
-                        done(`Bulk deleted ${deletedMessages.size} message(s)`)
+                        done(null)
                     }).catch(error)
                 }).catch(error)
             }).catch(error);
@@ -88,7 +88,7 @@ function deleteMessages(cnl, count, client, user, mm, referencedMessageID) {
         Send.info(cnl, `Clearing ${count} messages`).then( () => {
             cnl.bulkDelete(count).then(deletedMessages => {
                 Log.success(`Bulk deleted ${deletedMessages.size} message(s)`)
-                done(`Bulk deleted ${deletedMessages.size} message(s)`)
+                done(null)
             }).catch(error)
         })
     })
