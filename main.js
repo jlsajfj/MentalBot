@@ -61,7 +61,10 @@ client.on("message", msg => {
             }
 
             if(msg.member.roles.cache.find(r => perms[args[1]].includes(r.name))){
-                command(msg, args, client)
+                command(msg, args, client).catch( err => {
+                    Log.fail('An error has occurred')
+                    Send.error(msg, err)
+                })
                 return
             }
             Send.fail(msg, replies.insufficient_permissions)
