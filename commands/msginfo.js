@@ -29,7 +29,7 @@ function msginfo(msg, args){
             })
         })
     } else {
-        return Send.fail('A replied message is required')
+        return Send.fail(msg, 'A replied message is required')
     }
 }
 
