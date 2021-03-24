@@ -5,7 +5,7 @@ const { MessageEmbed } = require('discord.js')
 // const { writeFile } = require('fs')
 
 function code_format(msg, args){
-    if(args.length < 2) return Send.fail('Not enough args')
+    if(args.length < 2) return Send.fail(msg, 'Not enough args')
     return new Promise( (done, error) => {
         var cnl = msg.channel;
         if (msg.reference){
