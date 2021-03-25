@@ -5,7 +5,7 @@ const { MessageEmbed } = require('discord.js')
 
 function tribute(msg, args){
     return new Promise( (done, error) => {
-        readFile('./tributes.json', err, in_data => {
+        readFile('./tributes.json', (err, in_data) => {
             if (err) error(err)
             else {
                 var tributes = JSON.parse(in_data);
