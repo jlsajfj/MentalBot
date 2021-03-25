@@ -37,7 +37,7 @@ function code_format(msg, args){
                 Send.success(msg, code_embed).then(done).catch(error)
             })
         } else {
-            Send.fail('A replied message is required').then(done).catch(error)
+            Send.fail(msg, 'A replied message is required').then(done).catch(error)
         }
     })
 }
