@@ -16,7 +16,7 @@ function init(client){
                 setTimeout(() => {
                     sent_msg.delete()
                     Log.success('Message erased')
-                }, 2000)
+                }, 5000)
             }).catch(Log.fail)
             return
         }
