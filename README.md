@@ -109,7 +109,7 @@ As you can see there is a `no_voice_connected`, that is for music, which is next
 
 ## Code
 
-This section is just if you care about how the bot actually works.
+This section is just if you care about how the bot actually works. **This section is currently out of date**
 
 ### Commands
 
