@@ -61,6 +61,7 @@ client.on("message", msg => {
             }
 
             if(msg.member.roles.cache.find(r => perms[args[1]].includes(r.name))){
+                Log.success(`Found command: ${args[1]}`)
                 command(msg, args, client).catch( err => {
                     Log.fail('An error has occurred')
                     console.log(err)
