@@ -85,6 +85,11 @@ function init(client){
     })
     client.on('guildMemberAdd', member => {
         Log.info(`${member.displayName} has joined the guild`)
+        const joinEmbed = new MessageEmbed()
+            .setColor('#FFECAC')
+            .setTitle(`Welcome to Mental Hospital!`)
+            .attachFiles(['./assets/icon.png'])
+            .setThumbnail('attachment://icon.png')
         if(auto_roles && auto_roles.length){
             member.roles.add(auto_roles, "default roles")
             if(!all_roles){
@@ -97,14 +102,16 @@ function init(client){
                 })
                 Promise.all(role_promises).then( role_fetched => {
                     all_roles = role_fetched
-                    Send.success(member, `Welcome to Mental Hospital, <@${member.id}>! Here are your current roles:\n${all_roles.map(elem => elem.name).join('\n')}`)
+                    joinEmbed.setDescription(`Here are your current roles ${member}:\n${all_roles.map(elem => elem.name).join('\n')}`)
                 })
             } else {
-                Send.success(member, `Welcome to Mental Hospital, <@${member.id}>! Here are your current roles:\n${all_roles.map(elem => elem.name).join('\n')}`)
+                joinEmbed.setDescription(`Here are your current roles ${member}:\n${all_roles.map(elem => elem.name).join('\n')}`)
             }
         } else {
             Log.info("No roles to add")
+            joinEmbed.setDescription('Please enjoy your stay ${member}.')
         }
+        Send.success(member, joinEmbed)
     })
     Log.success('Completed')
 }
