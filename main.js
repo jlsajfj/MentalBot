@@ -10,6 +10,7 @@ const Log = require("./logging.js")
 const client = new Client();
 client.login(config.token);
 client.commands = new Collection();
+Log.cls()
 
 Log.info("MentalBot is initializing")
 client.on('ready', () => {

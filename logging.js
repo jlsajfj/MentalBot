@@ -16,9 +16,15 @@ function colorLog(msg, color){
     console.log(`${FgBlue}[${new Date().toISOString()}] ${color}${msg}${Reset}`)
 }
 
+function clear(){
+    console.log('\033[2J');
+    console.clear();
+}
+
 module.exports = {
     success: successLog,
     fail: failLog,
     info: infoLog,
-    color: colorLog
+    color: colorLog,
+    cls: clear
 }
